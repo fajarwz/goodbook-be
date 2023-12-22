@@ -1,11 +1,5 @@
 <?php
 
-use App\Enums\TokenAbility;
-use App\Http\Controllers\Api\AuthController;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,18 +11,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::middleware(['auth:sanctum', 'ability:'.TokenAbility::ACCESS_API->value])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', function (Request $request) {
-        return Response::success([
-            'user' => auth()->user(),
-        ]);
-    });
-});
+/**
+ * 3 domains:
+ * - admin
+ * - member
+ * - site (public)
+ */
 
-Route::post('/refresh-token', [AuthController::class, 'refreshToken'])->middleware([
-    'auth:sanctum',
-    'ability:'.TokenAbility::ISSUE_ACCESS_TOKEN->value,
-]);
+require_once('api/member.php');
+require_once('api/admin.php');

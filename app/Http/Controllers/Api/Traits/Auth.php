@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Traits;
 
 use App\Enums\TokenAbility;
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class AuthController extends Controller
+trait Auth
 {
     public function __construct(User $user)
     {
-        // model as dependency injection
         $this->user = $user;
     }
 
@@ -30,7 +29,7 @@ class AuthController extends Controller
         $user = $this->user::create([
             'name' => $request['name'],
             'email' => $request['email'],
-            'password' => bcrypt($request['password']),
+            'password' => $request['password'],
         ]);
 
         [$accessToken, $refreshToken, $expiresAt] = $this->generateTokenFromUser($user);
@@ -52,13 +51,17 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!auth()->attempt(array_merge($attr, [
+            'role' => function ($query) {
+                $query->where('role', Role::MEMBER->value);
+            }
+        ]))) {
             return Response::fail([
                 'credential' => 'Wrong email or password.',
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user = $this->user::where('email', $request->email)->firstOrFail();
+        $user = $this->user::where('email', $request->email)->where('role', Role::MEMBER->value)->firstOrFail();
         [$accessToken, $refreshToken, $expiresAt] = $this->generateTokenFromUser($user);
 
         return Response::success([
