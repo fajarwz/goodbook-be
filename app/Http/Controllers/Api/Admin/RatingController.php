@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Admin\RatingRequest;
-// use App\Http\Resources\Admin\RatingCollection;
-use App\Http\Resources\Admin\RatingResource;
+use App\Http\Resources\Admin\RatingCollection;
+// use App\Http\Resources\Admin\RatingResource;
 use App\Models\Rating;
 use App\Support\ResourcePaginator;
 use Illuminate\Http\Request;
@@ -24,7 +24,8 @@ class RatingController extends Controller
             ->withQueryString();
 
         return Response::success([
-            'ratings' => new ResourcePaginator(RatingResource::collection($ratings)),
+            // 'ratings' => new ResourcePaginator(RatingResource::collection($ratings)),
+            'ratings' => new ResourcePaginator(new RatingCollection($ratings)),
         ]);
     }
 }

@@ -20,7 +20,7 @@ class ResourcePaginator implements JsonSerializable, Arrayable
 
     public function toArray()
     {
-        return array_merge($this->paginator->toArray(), ['data' => $this->collection]);
+        return array_merge($this->paginator->toArray(), ['data' => $this->paginator->items()]);
     }
 
     public function jsonSerialize()
