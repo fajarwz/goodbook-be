@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Traits;
 use App\Enums\TokenAbility;
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\AccessTokenResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -35,12 +37,12 @@ trait Auth
         [$accessToken, $refreshToken, $expiresAt] = $this->generateTokenFromUser($user);
 
         return Response::success([
-            'user' => $user,
-            'access_token' => [
+            'user' => new UserResource($user),
+            'access_token' => new AccessTokenResource((object) [
                 'access_token' => $accessToken->plainTextToken,
                 'refresh_token' => $refreshToken->plainTextToken,
                 'expires_at' => $expiresAt,
-            ],
+            ]),
         ], Response::HTTP_CREATED);
     }
 
@@ -52,8 +54,8 @@ trait Auth
         ]);
 
         if (!auth()->attempt(array_merge($attr, [
-            'role' => function ($query) {
-                $query->where('role', Role::MEMBER->value);
+            'role_id' => function ($query) {
+                $query->where('role_id', Role::MEMBER->value);
             }
         ]))) {
             return Response::fail([
@@ -61,16 +63,16 @@ trait Auth
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user = $this->user::where('email', $request->email)->where('role', Role::MEMBER->value)->firstOrFail();
+        $user = $this->user::where('email', $request->email)->where('role_id', Role::MEMBER->value)->firstOrFail();
         [$accessToken, $refreshToken, $expiresAt] = $this->generateTokenFromUser($user);
 
         return Response::success([
-            'user' => $user,
-            'access_token' => [
+            'user' => new UserResource($user),
+            'access_token' => new AccessTokenResource((object) [
                 'access_token' => $accessToken->plainTextToken,
                 'refresh_token' => $refreshToken->plainTextToken,
                 'expires_at' => $expiresAt,
-            ],
+            ]),
         ]);
     }
 
@@ -90,11 +92,11 @@ trait Auth
         [$accessToken, $refreshToken, $expiresAt] = $this->generateTokenFromUser($user);
 
         return Response::success([
-            'access_token' => [
+            'access_token' => new AccessTokenResource((object) [
                 'access_token' => $accessToken->plainTextToken,
                 'refresh_token' => $refreshToken->plainTextToken,
                 'expires_at' => $expiresAt,
-            ],
+            ]),
         ], Response::HTTP_CREATED);
     }
 

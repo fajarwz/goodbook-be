@@ -4,25 +4,25 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Admin\RatingRequest;
-use App\Http\Resources\Admin\RatingResource;
-use App\Models\Rating;
+use App\Http\Requests\Api\Admin\MemberRequest;
+use App\Http\Resources\Admin\MemberResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RatingController extends Controller
+class MemberController extends Controller
 {
-    public function index(RatingRequest $request)
+    public function index(MemberRequest $request)
     {
-        $ratings = QueryBuilder::for(Rating::class)
+        $members = QueryBuilder::for(User::class)
+            ->where('role_id', Role::MEMBER)
             ->allowedFilters(['created_at'])
-            ->with(['user', 'book'])
             ->paginate($request->paginate ?? 10)
             ->withQueryString();
 
         return Response::success([
-            'ratings' => RatingResource::collection($ratings)->response()->getData(true),
+            'users' => MemberResource::collection($members)->response()->getData(true),
         ]);
     }
 }

@@ -17,9 +17,9 @@ class Role
     public function handle(Request $request, Closure $next, int $role): Response
     {
         if ($user = auth()->user()) {
-            if ($role === RoleType::ADMIN->value && $user->role === RoleType::ADMIN->value)
+            if ($role === RoleType::ADMIN->value && $user->role_id === RoleType::ADMIN->value)
                 return $next($request);
-            elseif ($role === RoleType::MEMBER->value && $user->role === RoleType::MEMBER->value)
+            elseif ($role === RoleType::MEMBER->value && $user->role_id === RoleType::MEMBER->value)
                 return $next($request);
         }
 

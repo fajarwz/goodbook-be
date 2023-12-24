@@ -4,6 +4,7 @@ use App\Enums\Role;
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Api\Admin\AuthController;
 use App\Http\Controllers\Api\Admin\RatingController;
+use App\Http\Controllers\Api\Admin\MemberController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ Route::prefix('admin')->group(function () {
         });
     
         Route::resource('ratings', RatingController::class)->only(['index']);
+        Route::resource('members', MemberController::class)->only(['index']);
     });
 
     Route::post('refresh-token', [AuthController::class, 'refreshToken'])->middleware([

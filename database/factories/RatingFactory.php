@@ -17,7 +17,7 @@ class RatingFactory extends Factory
     public function definition(): array
     {
         $memberRole = 2;
-        $userIds = \DB::table('users')->where('role', $memberRole)->pluck('id');
+        $userIds = \DB::table('users')->where('role_id', $memberRole)->pluck('id');
         $bookIds = \DB::table('books')->pluck('id');
         return [
             'user_id' => fake()->randomElement($userIds),

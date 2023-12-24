@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@test.com',
-            'role' => $admin,
+            'role_id' => $admin,
         ]);
         User::factory()->create([
             'name' => 'Fajar WZ',
