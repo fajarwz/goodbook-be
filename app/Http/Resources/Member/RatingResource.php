@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Member;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\Role;
 
-class UserResource extends JsonResource
+class RatingResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,15 +16,10 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'image' => $this->image,
+            'rating' => $this->rating,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'role' => [
-                'id' => $this->role_id,
-                'name' => Role::from($this->role_id)->name,
-            ],
+            'book' => new BookResource($this->book),
         ];
     }
 }

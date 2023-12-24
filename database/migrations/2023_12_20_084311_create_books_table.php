@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('name');
-            $table->string('author');
+            $table->text('cover');
+            $table->decimal('avg_rating', 3, 2);
+            $table->bigInteger('rater_count')->unsigned();
             $table->timestamps();
         });
     }

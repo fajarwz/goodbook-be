@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->tinyInteger('role_id')->default(2)->comment('1 = admin, 2 = member');
+            $table->text('image');
             $table->timestamps();
         });
     }

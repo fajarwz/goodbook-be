@@ -12,14 +12,10 @@ Route::prefix('admin')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::middleware(['auth:sanctum', 'ability:'.TokenAbility::ACCESS_API->value, 'role:'.Role::ADMIN->value])->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
-        Route::get('user', function () {
-            return Response::success([
-                'user' => auth()->user(),
-            ]);
-        });
-    
-        Route::resource('ratings', RatingController::class)->only(['index']);
-        Route::resource('members', MemberController::class)->only(['index']);
+
+        Route::apiResource('books', BookController::class)->only(['index']);
+        Route::apiResource('members', MemberController::class)->only(['index']);
+        Route::apiResource('ratings', RatingController::class)->only(['index']);
     });
 
     Route::post('refresh-token', [AuthController::class, 'refreshToken'])->middleware([
