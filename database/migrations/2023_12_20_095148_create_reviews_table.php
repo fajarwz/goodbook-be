@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('book_id')->unsigned();
             $table->tinyInteger('rating')->comment('1 to 5');
+            $table->text('review');
             $table->timestamps();
         });
     }

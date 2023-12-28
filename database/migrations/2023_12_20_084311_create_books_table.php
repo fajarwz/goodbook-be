@@ -14,10 +14,15 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('name');
-            $table->text('cover');
+            $table->string('title');
+            $table->string('short_description');
+            $table->text('description');
+            $table->smallInteger('number_of_pages')->unsigned();
+            $table->tinyInteger('cover_type_id');
+            $table->date('published_at');
             $table->decimal('avg_rating', 3, 2);
             $table->bigInteger('rater_count')->unsigned();
+            $table->text('cover');
             $table->timestamps();
         });
     }
