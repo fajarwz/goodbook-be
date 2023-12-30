@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Enums\Role;
+use Carbon\Carbon;
 
 class UserResource extends JsonResource
 {
@@ -20,12 +21,12 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'image' => $this->image,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'role' => [
-                'id' => $this->role_id,
-                'name' => Role::from($this->role_id)->name,
-            ],
+            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('F j, Y'),
+            'updated_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->updated_at)->format('F j, Y'),
+            // 'role' => [
+            //     'id' => $this->role_id,
+            //     'name' => Role::from($this->role_id)->name,
+            // ],
         ];
     }
 }

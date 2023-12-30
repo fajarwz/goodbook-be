@@ -17,8 +17,8 @@ class RatingResource extends JsonResource
         return [
             'id' => $this->id,
             'rating' => $this->rating,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('F j, Y'),
+            'updated_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->updated_at)->format('F j, Y'),
             'user' => new UserResource($this->user),
             'book' => new BookResource($this->book),
         ];
