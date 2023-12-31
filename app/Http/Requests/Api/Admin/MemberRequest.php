@@ -23,6 +23,7 @@ class MemberRequest extends FormRequest
     {
         return [
             'paginate' => 'nullable|integer',
+            'search' => 'nullable|string',
         ];
     }
 }

@@ -18,12 +18,18 @@ class MemberController extends Controller
         $members = QueryBuilder::for(User::class)
             ->where('role_id', Role::MEMBER)
             ->orderByDesc('updated_at')
-            ->allowedFilters(['created_at'])
-            ->paginate($request->paginate ?? 10)
-            ->withQueryString();
+            ->allowedFilters(['created_at']);
+
+        if ($request->search) {
+            $members->where('name', 'like', "%$request->search%")
+                ->orWhere('email', 'like', "%$request->search%");
+        }
 
         return Response::success([
-            'users' => UserResource::collection($members)->response()->getData(true),
+            'users' => UserResource::collection(
+                $members->paginate($request->paginate ?? 10)
+                    ->withQueryString()
+            )->response()->getData(true),
         ]);
     }
 }
