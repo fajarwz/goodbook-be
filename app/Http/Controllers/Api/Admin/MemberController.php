@@ -20,7 +20,7 @@ class MemberController extends Controller
             ->orderByDesc('updated_at')
             ->allowedFilters(['created_at']);
 
-        if ($request->search) {
+        if (isset($request->search)) {
             $members->where('name', 'like', "%$request->search%")
                 ->orWhere('email', 'like', "%$request->search%");
         }

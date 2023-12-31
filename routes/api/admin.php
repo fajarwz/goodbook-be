@@ -3,6 +3,7 @@
 use App\Enums\Role;
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Api\Admin\AuthController;
+use App\Http\Controllers\Api\Admin\BookController;
 use App\Http\Controllers\Api\Admin\RatingController;
 use App\Http\Controllers\Api\Admin\MemberController;
 use Illuminate\Http\Response;

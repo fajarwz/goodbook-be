@@ -11,14 +11,24 @@ class Book extends Model
 
     protected $fillable = [
         'user_id',
-        'name',
-        'cover',
+        'cover_type_id',
+        'title',
+        'short_description',
+        'description',
+        'number_of_pages',
         'avg_rating',
         'rater_count',
+        'cover',
+        'published_at',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function coverType()
+    {
+        return $this->belongsTo(CoverType::class);
     }
 }

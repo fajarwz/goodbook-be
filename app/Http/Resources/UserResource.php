@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Enums\Role;
+// use App\Enums\Role;
 use Carbon\Carbon;
 
 class UserResource extends JsonResource

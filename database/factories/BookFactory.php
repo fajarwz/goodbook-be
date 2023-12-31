@@ -18,7 +18,7 @@ class BookFactory extends Factory
     {
         $memberRole = 2;
         $userIds = \DB::table('users')->where('role_id', $memberRole)->pluck('id');
-        $coverTypes = \App\Enums\BookCoverType::cases();
+        $coverTypes = \App\Models\CoverType::pluck('id');
 
         return [
             'user_id' => fake()->randomElement($userIds),
