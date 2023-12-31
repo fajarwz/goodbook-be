@@ -2,11 +2,9 @@
 
 namespace App\Http\Resources\Admin;
 
-use App\Enums\BookCoverType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\UserResource;
 
 class BookResource extends JsonResource
 {

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RatingRequest extends FormRequest
+class ReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,6 +23,7 @@ class RatingRequest extends FormRequest
     {
         return [
             'paginate' => 'nullable|integer',
+            'search' => 'nullable|string',
         ];
     }
 }

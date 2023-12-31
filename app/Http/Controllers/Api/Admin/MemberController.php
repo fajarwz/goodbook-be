@@ -17,8 +17,7 @@ class MemberController extends Controller
     {
         $members = QueryBuilder::for(User::class)
             ->where('role_id', Role::MEMBER)
-            ->orderByDesc('updated_at')
-            ->allowedFilters(['created_at']);
+            ->orderByDesc('updated_at');
 
         if (isset($request->search)) {
             $members->where('name', 'like', "%$request->search%")
@@ -27,8 +26,7 @@ class MemberController extends Controller
 
         return Response::success([
             'users' => UserResource::collection(
-                $members->paginate($request->paginate ?? 10)
-                    ->withQueryString()
+                $members->paginate($request->paginate ?? 10)->withQueryString()
             )->response()->getData(true),
         ]);
     }

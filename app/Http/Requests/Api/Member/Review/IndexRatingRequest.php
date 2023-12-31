@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Api\Member\Rating;
+namespace App\Http\Requests\Api\Member\Review;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FormRatingRequest extends FormRequest
+class IndexReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,16 +21,8 @@ class FormRatingRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'rating' => 'required|integer|between:1,5',
+        return [
+            'paginate' => 'nullable|integer',
         ];
-
-        if (request()->isMethod('post')) {
-            $rules[] = [
-                'book_id' => 'required|exists:App\Models\Book,id',
-            ];
-        }
-
-        return $rules;
     }
 }

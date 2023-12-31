@@ -4,7 +4,7 @@ use App\Enums\Role;
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Api\Admin\AuthController;
 use App\Http\Controllers\Api\Admin\BookController;
-use App\Http\Controllers\Api\Admin\RatingController;
+use App\Http\Controllers\Api\Admin\ReviewController;
 use App\Http\Controllers\Api\Admin\MemberController;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
@@ -16,7 +16,7 @@ Route::prefix('admin')->group(function () {
 
         Route::apiResource('books', BookController::class)->only(['index']);
         Route::apiResource('members', MemberController::class)->only(['index']);
-        Route::apiResource('ratings', RatingController::class)->only(['index']);
+        Route::apiResource('reviews', ReviewController::class)->only(['index']);
     });
 
     Route::post('refresh-token', [AuthController::class, 'refreshToken'])->middleware([

@@ -4,21 +4,21 @@ namespace App\Http\Controllers\Api\Member;
 
 use App\Enums\Role;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Member\Rating\IndexRatingRequest;
-use App\Http\Requests\Api\Member\Rating\FormRatingRequest;
-use App\Http\Resources\Member\RatingResource;
+use App\Http\Requests\Api\Member\Review\IndexReviewRequest;
+use App\Http\Requests\Api\Member\Review\FormReviewRequest;
+use App\Http\Resources\Member\ReviewResource;
 use App\Models\Book;
-use App\Models\Rating;
+use App\Models\Review;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\QueryBuilder\QueryBuilder;
 
-class RatingController extends Controller
+class ReviewController extends Controller
 {
-    public function index(IndexRatingRequest $request)
+    public function index(IndexReviewRequest $request)
     {
-        $ratings = QueryBuilder::for(Rating::class)
+        $reviews = QueryBuilder::for(Review::class)
             ->where('user_id', auth()->id())
             ->allowedFilters(['created_at'])
             ->with(['book'])
@@ -26,11 +26,11 @@ class RatingController extends Controller
             ->withQueryString();
 
         return Response::success([
-            'ratings' => RatingResource::collection($ratings)->response()->getData(true),
+            'reviews' => ReviewResource::collection($reviews)->response()->getData(true),
         ]);
     }
 
-    public function store(FormRatingRequest $request)
+    public function store(FormReviewRequest $request)
     {
         if ($this->isUserAlreadyRateThisBook($request->book_id, auth()->id())) {
             return Response::fail([
@@ -39,14 +39,14 @@ class RatingController extends Controller
         }
 
         try {
-            $rating = DB::transaction(function () use ($request) {
+            $review = DB::transaction(function () use ($request) {
                 $book = Book::find($request->book_id);
                 $book->update([
                     'avg_rating' => ($book->avg_rating + $request->rating) / ($book->rater_count + 1),
                     'rater_count' => ($book->rater_count + 1),
                 ]);
     
-                return Rating::create(array_merge($request->validated(), ['user_id' => auth()->id()]));
+                return Review::create(array_merge($request->validated(), ['user_id' => auth()->id()]));
             });
         } catch (\Throwable $th) {
             return Response::fail([
@@ -55,18 +55,18 @@ class RatingController extends Controller
         }
 
         return Response::success([
-            'rating' => new RatingResource($rating),
+            'review' => new ReviewResource($review),
         ], Response::HTTP_CREATED);
     }
 
-    public function update(FormRatingRequest $request, Rating $rating)
+    public function update(FormReviewRequest $request, Review $review)
     {
         try {
-            $rating = DB::transaction(function () use ($request, $rating) {
-                $book = Book::find($rating->book_id);
+            $review = DB::transaction(function () use ($request, $review) {
+                $book = Book::find($review->book_id);
 
                 $previousTotalRating = $book->avg_rating * $book->rater_count;
-                $previousTotalRating -= $rating->rating;
+                $previousTotalRating -= $review->rating;
                 $newTotalRating = $previousTotalRating + $request->rating;
                 $newAvgRating = $newTotalRating / $book->rater_count;
 
@@ -74,7 +74,7 @@ class RatingController extends Controller
                     'avg_rating' => $newAvgRating,
                 ]);
     
-                return tap($rating)->update(array_merge($request->validated(), ['user_id' => auth()->id()]));
+                return tap($review)->update(array_merge($request->validated(), ['user_id' => auth()->id()]));
             });
         } catch (\Throwable $th) {
             return Response::fail([
@@ -83,18 +83,18 @@ class RatingController extends Controller
         }
 
         return Response::success([
-            'rating' => new RatingResource($rating),
+            'review' => new ReviewResource($review),
         ]);
     }
 
-    public function destroy(Rating $rating)
+    public function destroy(Review $review)
     {
         try {
-            DB::transaction(function () use ($rating) {
-                $book = Book::find($rating->book_id);
+            DB::transaction(function () use ($review) {
+                $book = Book::find($review->book_id);
 
                 $previousTotalRating = $book->avg_rating * $book->rater_count;
-                $previousTotalRating -= $rating->rating;
+                $previousTotalRating -= $review->rating;
                 $newAvgRating = $previousTotalRating / max(($newRaterCount = $book->rater_count - 1), 1);
 
                 $book->update([
@@ -102,7 +102,7 @@ class RatingController extends Controller
                     'rater_count' => $newRaterCount,
                 ]);
     
-                $rating->delete();
+                $review->delete();
             });
         } catch (\Throwable $th) {
             return Response::fail([
@@ -117,6 +117,6 @@ class RatingController extends Controller
 
     private function isUserAlreadyRateThisBook($bookId, $userId)
     {
-        return Rating::where('book_id', $bookId)->where('user_id', $userId)->exists();
+        return Review::where('book_id', $bookId)->where('user_id', $userId)->exists();
     }
 }

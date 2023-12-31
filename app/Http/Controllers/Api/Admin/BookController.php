@@ -14,13 +14,9 @@ class BookController extends Controller
 {
     public function index(BookRequest $request)
     {
-        $books = QueryBuilder::for(Book::class)->with(['user', 'coverType']);
+        $books = QueryBuilder::for(Book::class)->with(['user', 'coverType'])->orderByDesc('updated_at');
 
         if (isset($request->search)) {
-            // $books->where(function($query) {
-            //     $query->where('title', 'like', "%$request->search%")
-            //         ->orWhere('short_description', 'like', "%$request->search%");
-            // })
             $books->where('title', 'like', "%$request->search%")
             ->orWhere('short_description', 'like', "%$request->search%")
             ->orWhereHas('user', function($query) use($request) {
@@ -39,10 +35,9 @@ class BookController extends Controller
         }
 
         return Response::success([
-            'books' => 
-                BookResource::collection(
-                    $books->paginate($request->paginate ?? 10)->withQueryString()
-                )->response()->getData(true),
+            'books' => BookResource::collection(
+                $books->paginate($request->paginate ?? 10)->withQueryString()
+            )->response()->getData(true),
         ]);
     }
 }

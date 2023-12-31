@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Rating>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Review>
  */
 class ReviewFactory extends Factory
 {
@@ -23,7 +23,7 @@ class ReviewFactory extends Factory
         do {
             $uniqueUserId = fake()->randomElement($userIds);
             $uniqueBookId = fake()->randomElement($bookIds);
-        } while (\DB::table('ratings')->where(['user_id' => $uniqueUserId, 'book_id' => $uniqueBookId])->exists());
+        } while (\DB::table('reviews')->where(['user_id' => $uniqueUserId, 'book_id' => $uniqueBookId])->exists());
 
         $newRating = rand(1, 5);
 
@@ -38,6 +38,7 @@ class ReviewFactory extends Factory
             'user_id' => $uniqueUserId,
             'book_id' => $uniqueBookId,
             'rating' => $newRating,
+            'review' => fake()->sentence(),
         ];
     }
 }
