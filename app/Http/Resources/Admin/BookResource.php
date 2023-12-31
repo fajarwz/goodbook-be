@@ -25,7 +25,7 @@ class BookResource extends JsonResource
             'avg_rating' => $this->avg_rating,
             'rater_count' => $this->rater_count,
             'cover' => $this->cover,
-            'published_at' => $this->published_at,
+            'published_at' => Carbon::createFromFormat('Y-m-d', $this->published_at)->format('F j, Y'),
             'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('F j, Y'),
             'updated_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->updated_at)->format('F j, Y'),
             'author' => [
