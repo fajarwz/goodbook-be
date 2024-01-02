@@ -17,6 +17,8 @@ Route::prefix('member')->group(function () {
         Route::apiResource('reviews', ReviewController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::apiResource('books', BookController::class)->only(['index']);
     });
+
+    Route::get('books/best', [BookController::class, 'getBest']);
     
     Route::post('refresh-token', [AuthController::class, 'refreshToken'])->middleware([
         'auth:sanctum',

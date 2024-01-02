@@ -20,7 +20,7 @@ class ReviewController extends Controller
     {
         $reviews = QueryBuilder::for(Review::class)
             ->where('user_id', auth()->id())
-            ->allowedFilters(['created_at'])
+            ->allowedFilters(['updated_at', 'rating'])
             ->with(['book'])
             ->paginate($request->paginate ?? 10)
             ->withQueryString();
