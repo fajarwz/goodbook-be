@@ -23,6 +23,7 @@ class IndexBookRequest extends FormRequest
     {
         return [
             'search' => 'nullable|string',
+            'paginate' => 'nullable|integer',
         ];
     }
 }

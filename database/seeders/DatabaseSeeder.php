@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             CoverTypeSeeder::class,
             BookSeeder::class,
             BookGenreSeeder::class,
-            // ReviewSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }
