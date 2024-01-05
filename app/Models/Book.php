@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,5 +31,15 @@ class Book extends Model
     public function coverType()
     {
         return $this->belongsTo(CoverType::class);
+    }
+
+    public function scopePublishedBetween($query, $from, $until)
+    {
+        return $query->whereBetween('published_at', [Carbon::parse($from), Carbon::parse($until)->endOfMonth()]);
+    }
+
+    public function scopeRatings($query, $value)
+    {
+        return $query->whereBetween('avg_rating', [$value, 5]);
     }
 }

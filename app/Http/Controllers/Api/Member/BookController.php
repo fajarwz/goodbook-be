@@ -9,6 +9,7 @@ use App\Http\Resources\Member\Book\IndexBookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class BookController extends Controller
@@ -17,7 +18,7 @@ class BookController extends Controller
     {
         $books = QueryBuilder::for(Book::class)
             ->with('user')
-            ->allowedFilters(['published_at', 'avg_rating'])
+            ->allowedFilters([AllowedFilter::scope('published_between'), AllowedFilter::scope('ratings')])
             ->orderByDesc('published_at');
 
         if (isset($request->search)) {
