@@ -16,10 +16,7 @@ class BookGenreSeeder extends Seeder
         $genreIds = \App\Models\Genre::pluck('id');
 
         foreach ($books as $book) {
-            $genreNum = 3;
-            for ($i=0; $i < $genreNum; $i++) { 
-                $book->genres()->attach(fake()->randomElement($genreIds));
-            }
+            $book->genres()->attach(fake()->randomElements($genreIds, null));
         }
     }
 }

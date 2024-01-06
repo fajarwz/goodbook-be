@@ -23,7 +23,7 @@ class ReviewFactory extends Factory
         do {
             $uniqueUserId = fake()->randomElement($userIds);
             $uniqueBookId = fake()->randomElement($bookIds);
-        } while (\DB::table('reviews')->where(['user_id' => $uniqueUserId, 'book_id' => $uniqueBookId])->exists());
+        } while (\DB::table('reviews')->where('user_id', $uniqueUserId)->where('book_id', $uniqueBookId)->exists());
 
         $newRating = rand(1, 5);
 
@@ -38,7 +38,7 @@ class ReviewFactory extends Factory
             'user_id' => $uniqueUserId,
             'book_id' => $uniqueBookId,
             'rating' => $newRating,
-            'review' => fake()->sentence(),
+            'review' => fake()->text(),
         ];
     }
 }
