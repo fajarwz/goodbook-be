@@ -4,6 +4,7 @@ use App\Enums\Role;
 use App\Enums\TokenAbility;
 use App\Http\Controllers\Api\Member\AuthController;
 use App\Http\Controllers\Api\Member\BookController;
+use App\Http\Controllers\Api\Member\BookReviewController;
 use App\Http\Controllers\Api\Member\GenreController;
 use App\Http\Controllers\Api\Member\ReviewController;
 use Illuminate\Http\Response;
@@ -23,6 +24,7 @@ Route::prefix('member')->group(function () {
     Route::apiResource('books', BookController::class)->only(['index', 'show'])
         ->parameters(['books' => 'slug']);
     Route::apiResource('genres', GenreController::class)->only(['index']);
+    Route::apiResource('books/{bookId}/reviews', BookReviewController::class)->only(['index']);
     
     Route::post('refresh-token', [AuthController::class, 'refreshToken'])->middleware([
         'auth:sanctum',

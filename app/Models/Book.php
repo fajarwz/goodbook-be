@@ -38,6 +38,11 @@ class Book extends Model
         return $this->belongsToMany(Genre::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
     public function scopePublishedBetween($query, $from, $until)
     {
         return $query->whereBetween('published_at', [Carbon::parse($from), Carbon::parse($until)->endOfMonth()]);
