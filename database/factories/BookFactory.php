@@ -20,9 +20,12 @@ class BookFactory extends Factory
         $userIds = \DB::table('users')->where('role_id', $memberRole)->pluck('id');
         $coverTypes = \App\Models\CoverType::pluck('id');
 
+        $sentence = fake()->sentence();
+        $title = substr($sentence, 0, strlen($sentence) - 1);
+
         return [
             'user_id' => fake()->randomElement($userIds),
-            'title' => $title = fake()->sentence(),
+            'title' => $title,
             'slug' => \Str::slugger($title),
             'short_description' => fake()->text('250').'...',
             'description' => fake()->text('700'),

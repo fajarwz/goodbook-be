@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
                 return Response::fail(['message' => 'Invalid credential.'], Response::HTTP_FORBIDDEN);
             }
             elseif ($exception instanceof \Illuminate\Database\QueryException) {
-                return Response::error('Server error.', Response::HTTP_INTERNAL_SERVER_ERROR);
+                return Response::error('We\'re experiencing a temporary issue. Please try again in a few minutes.', Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         }
 
