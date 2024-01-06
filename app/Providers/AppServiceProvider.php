@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Response;
+use Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,6 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // https://github.com/omniti-labs/jsend
         Response::macro($status = 'success', function ($data = null, $statusCode = Response::HTTP_OK) use ($status) {
             return response()->json([
                 'status' => $status,
@@ -31,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
                 'status' => $status,
                 'message' => $message,
             ], $statusCode);
+        });
+
+        // SLUG WITH RANDOM NUMBER AND 255 MAX CHAR LENGTH
+        Str::macro('slugger', function ($string) {
+            return substr(self::slug($string, '-'), 0, 249).'-'.rand(10000, 99999);
         });
     }
 

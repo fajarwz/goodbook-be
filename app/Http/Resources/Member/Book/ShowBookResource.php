@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources\Member\Book;
 
+use App\Http\Resources\Member\GenreResource;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class IndexBookResource extends JsonResource
+class ShowBookResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,13 +20,21 @@ class IndexBookResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'short_description' => $this->short_description,
+            'description' => $this->description,
             'avg_rating' => $this->avg_rating,
+            'number_of_pages' => $this->number_of_pages,
             'cover' => $this->cover,
             'published_at' => Carbon::createFromFormat('Y-m-d', $this->published_at)->format('F j, Y'),
             'author' => [
                 'id' => $this->user_id,
                 'name' => $this->user->name,
+                'image' => $this->user->image,
+                'book_count' => \App\Models\Book::where('user_id', $this->user_id)->count(),
+            ],
+            'genres' => GenreResource::collection($this->genres),
+            'cover_type' => [
+                'id' => $this->cover_type_id,
+                'name' => $this->coverType->name,
             ],
         ];
     }

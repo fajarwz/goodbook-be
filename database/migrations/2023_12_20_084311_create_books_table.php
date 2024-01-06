@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->string('title');
+            $table->string('slug');
             $table->string('short_description');
             $table->text('description');
             $table->smallInteger('number_of_pages')->unsigned();

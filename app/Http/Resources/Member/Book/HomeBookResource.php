@@ -17,6 +17,7 @@ class HomeBookResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'slug' => $this->slug,
             'avg_rating' => $this->avg_rating,
             'cover' => $this->cover,
             'author' => [

@@ -22,7 +22,8 @@ class BookFactory extends Factory
 
         return [
             'user_id' => fake()->randomElement($userIds),
-            'title' => fake()->sentence(),
+            'title' => $title = fake()->sentence(),
+            'slug' => \Str::slugger($title),
             'short_description' => fake()->text('250').'...',
             'description' => fake()->text('700'),
             'number_of_pages' => rand(50, 700),
@@ -30,7 +31,7 @@ class BookFactory extends Factory
             'published_at' => fake()->dateTime(),
             'avg_rating' => 0.00,
             'rater_count' => 0,
-            'cover' => 'https://dummyimage.com/300x400/000/fff',
+            'cover' => 'https://dummyimage.com/375x575/000/fff',
         ];
     }
 }

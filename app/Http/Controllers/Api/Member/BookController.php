@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Member\Book\IndexBookRequest;
 use App\Http\Resources\Member\Book\HomeBookResource;
 use App\Http\Resources\Member\Book\IndexBookResource;
+use App\Http\Resources\Member\Book\ShowBookResource;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -63,6 +64,13 @@ class BookController extends Controller
 
         return Response::success([
             'books' => HomeBookResource::collection($books),
+        ]);
+    }
+
+    public function show($slug)
+    {
+        return Response::success([
+            'book' => new ShowBookResource(Book::where('slug', $slug)->firstOrFail()),
         ]);
     }
 }

@@ -20,7 +20,8 @@ Route::prefix('member')->group(function () {
 
     Route::get('books/best', [BookController::class, 'getBest']);
     Route::get('books/newest', [BookController::class, 'getNewest']);
-    Route::apiResource('books', BookController::class)->only(['index']);
+    Route::apiResource('books', BookController::class)->only(['index', 'show'])
+        ->parameters(['books' => 'slug']);
     Route::apiResource('genres', GenreController::class)->only(['index']);
     
     Route::post('refresh-token', [AuthController::class, 'refreshToken'])->middleware([

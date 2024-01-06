@@ -12,16 +12,13 @@ class BookGenreSeeder extends Seeder
      */
     public function run(): void
     {
-        $bookIds = \App\Models\Book::pluck('id');
+        $books = \App\Models\Book::all();
         $genreIds = \App\Models\Genre::pluck('id');
 
-        foreach ($bookIds as $bookId) {
+        foreach ($books as $book) {
             $genreNum = 3;
             for ($i=0; $i < $genreNum; $i++) { 
-                \App\Models\BookGenre::create([
-                    'book_id' => $bookId,
-                    'genre_id' => fake()->randomElement($genreIds),
-                ]);
+                $book->genres()->attach(fake()->randomElement($genreIds));
             }
         }
     }

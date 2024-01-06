@@ -42,7 +42,10 @@ class Handler extends ExceptionHandler
     {
         if ($request->wantsJson()) {
             if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-                return Response::fail(['message' => 'Resource not found.'], Response::HTTP_NOT_FOUND);
+                return Response::fail(['message' => 'No data found.'], Response::HTTP_NOT_FOUND);
+            }
+            elseif ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+                return Response::fail(['message' => 'No data found.'], Response::HTTP_NOT_FOUND);
             }
             elseif ($exception instanceof \Illuminate\Validation\ValidationException) {
                 return Response::fail($exception->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
