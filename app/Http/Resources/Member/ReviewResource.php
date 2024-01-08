@@ -20,7 +20,10 @@ class ReviewResource extends JsonResource
             'rating' => $this->rating,
             'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('F j, Y'),
             'updated_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->updated_at)->format('F j, Y'),
-            'book' => new BookResource($this->book),
+            'book' => [
+                'id' => $this->book_id,
+                'name' => $this->book->name,
+            ],
         ];
     }
 }

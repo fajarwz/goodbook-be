@@ -22,13 +22,12 @@ class FormReviewRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'Review' => 'required|integer|between:1,5',
+            'rating' => 'nullable|numeric|between:1,5',
+            'review' => 'nullable|string|max:2000',
         ];
 
         if (request()->isMethod('post')) {
-            $rules[] = [
-                'book_id' => 'required|exists:App\Models\Book,id',
-            ];
+            $rules['book_id'] = 'required|exists:App\Models\Book,id';
         }
 
         return $rules;

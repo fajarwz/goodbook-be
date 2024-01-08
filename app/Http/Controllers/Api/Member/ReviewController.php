@@ -46,7 +46,7 @@ class ReviewController extends Controller
                     'rater_count' => ($book->rater_count + 1),
                 ]);
     
-                return Review::create(array_merge($request->validated(), ['user_id' => auth()->id()]));
+                return Review::create($request->validated() + ['user_id' => auth()->id()]);
             });
         } catch (\Throwable $th) {
             return Response::fail([
