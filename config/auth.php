@@ -112,4 +112,6 @@ return [
 
     'password_timeout' => 10800,
 
+    'avatar_generator_host' => env('AVATAR_GENERATOR_HOST'),
+
 ];
