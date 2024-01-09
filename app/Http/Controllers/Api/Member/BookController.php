@@ -23,15 +23,13 @@ class BookController extends Controller
             ->orderByDesc('published_at');
 
         if (isset($request->search)) {
-            $books->where('title', 'like', "%$request->search%")
-            ->orWhere('short_description', 'like', "%$request->search%")
-            ->orWhereHas('user', function($query) use($request) {
-                $query->where('name', 'like', "%$request->search%");
+            $books->where(function ($query) use ($request) {
+                $query->where('title', 'like', "%$request->search%")
+                ->orWhere('short_description', 'like', "%$request->search%")
+                ->orWhereHas('user', function ($query) use($request) {
+                    $query->where('name', 'like', "%$request->search%");
+                });
             });
-
-            if (is_numeric($request->search)) {
-                $books->orWhere('avg_rating', $request->search);
-            }
         }
 
         return Response::success([
