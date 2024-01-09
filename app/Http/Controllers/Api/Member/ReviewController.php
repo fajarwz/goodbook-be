@@ -32,9 +32,9 @@ class ReviewController extends Controller
 
     public function store(FormReviewRequest $request)
     {
-        if ($this->isUserAlreadyRateThisBook($request->book_id, auth()->id())) {
+        if ($this->isUserAlreadyReviewThisBook($request->book_id, auth()->id())) {
             return Response::fail([
-                'message' => 'User already rate this book.',
+                'message' => 'User already review this book.',
             ], Response::HTTP_UNPROCESSABLE_ENTITY);    
         }
 
@@ -115,7 +115,7 @@ class ReviewController extends Controller
         ]);
     }
 
-    private function isUserAlreadyRateThisBook($bookId, $userId)
+    private function isUserAlreadyReviewThisBook($bookId, $userId)
     {
         return Review::where('book_id', $bookId)->where('user_id', $userId)->exists();
     }

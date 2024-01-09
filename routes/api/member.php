@@ -17,6 +17,7 @@ Route::prefix('member')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
 
         Route::apiResource('reviews', ReviewController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::get('books/{bookId}/reviews/check', [BookReviewController::class, 'isReviewedByUser']);
     });
 
     Route::get('books/best', [BookController::class, 'getBest']);
