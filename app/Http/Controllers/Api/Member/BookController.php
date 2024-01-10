@@ -25,7 +25,6 @@ class BookController extends Controller
         if (isset($request->search)) {
             $books->where(function ($query) use ($request) {
                 $query->where('title', 'like', "%$request->search%")
-                ->orWhere('short_description', 'like', "%$request->search%")
                 ->orWhereHas('user', function ($query) use($request) {
                     $query->where('name', 'like', "%$request->search%");
                 });
