@@ -22,7 +22,7 @@ class FormReviewRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'rating' => 'nullable|numeric|between:1,5',
+            'rating' => 'required|numeric|between:1,5',
             'review' => 'nullable|string|max:2000',
         ];
 

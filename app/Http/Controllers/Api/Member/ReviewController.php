@@ -12,6 +12,7 @@ use App\Models\Review;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ReviewController extends Controller
@@ -19,14 +20,15 @@ class ReviewController extends Controller
     public function index(IndexReviewRequest $request)
     {
         $reviews = QueryBuilder::for(Review::class)
+            ->with('book.user')
             ->where('user_id', auth()->id())
-            ->allowedFilters(['updated_at', 'rating'])
-            ->with(['book'])
-            ->paginate($request->paginate ?? 10)
-            ->withQueryString();
+            ->allowedFilters([AllowedFilter::scope('updated_between'), AllowedFilter::scope('ratings')])
+            ->orderByDesc('updated_at');
 
         return Response::success([
-            'reviews' => ReviewResource::collection($reviews)->response()->getData(true),
+            'reviews' => ReviewResource::collection(
+                $reviews->paginate($request->paginate ?? 10)->withQueryString()
+            )->response()->getData(true),
         ]);
     }
 
@@ -49,6 +51,7 @@ class ReviewController extends Controller
                 return Review::create($request->validated() + ['user_id' => auth()->id()]);
             });
         } catch (\Throwable $th) {
+            info($th);
             return Response::fail([
                 'message' => 'Fail to store data.',
             ]);
