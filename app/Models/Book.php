@@ -45,10 +45,10 @@ class Book extends Model
 
     public function scopePublishedBetween($query, $from, $until)
     {
-        return $query->whereBetween('published_at', [Carbon::parse($from), Carbon::parse($until)->endOfMonth()]);
+        return $query->whereBetween('published_at', [Carbon::parse($from ?? 'January 1970'), Carbon::parse($until ?? today())->endOfMonth()]);
     }
 
-    public function scopeRatings($query, $value)
+    public function scopeRatings($query, $value = 0)
     {
         return $query->whereBetween('avg_rating', [$value, 5]);
     }
